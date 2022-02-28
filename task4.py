@@ -69,36 +69,23 @@ def query_single(qid, smoothing):
   
   
 if __name__ == '__main__':
-    # Initializing
+	print('---------- TASK 3 ----------')
+	# Initializing
 	start_time = datetime.now() 
 	retriever = RetrieverProb()
 	retriever.stats()
- 
+
 	# main processing
+	c = 5
 	retriever.run_exp(test_queries_file='coursework-1-data/test-queries.tsv', 
-                    model='laplace', cutoff=5)
- 
+					model='laplace', cutoff=c)
+
 	retriever.run_exp(test_queries_file='coursework-1-data/test-queries.tsv', 
-                    model='lindstone', cutoff=5)
- 
+					model='lindstone', cutoff=c)
+
+	retriever.run_exp(test_queries_file='coursework-1-data/test-queries.tsv', 
+				model='lindstone', cutoff=c)
+
 	# Measure and display elapsed time
 	time_elapsed = datetime.now() - start_time 	
-	print('Time elapsed (hh:mm:ss.ms) {}'.format(time_elapsed))
- 
-'''
-retriever = RetrieverProb()
-retriever.stats()
-
-# 
-qid = 1108939
-#query_single(qid, smoothing='no smoothing')
-#query_single(qid, smoothing='laplace')
-#query_single(qid, smoothing='lindstone')
-query_single(qid, smoothing='dirichlet')
-'''
-
-'''
-qid = 1108939
-what slows down the flow of blood
-['slows', 'flow', 'blood]
-'''
+	print('Time elapsed (hh:mm:ss.ms) {}\n'.format(time_elapsed))

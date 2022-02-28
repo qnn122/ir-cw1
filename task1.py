@@ -177,9 +177,10 @@ def calc_correlation(x_values, y_values):
 	return r_squared
 
  
-if __name__ == '__main__':
+if __name__ == '__main__':  
+	print('---------- TASK 1 ----------')
 	start_time = datetime.now() 
-	#run_term_frequency('coursework-1-data/passage-collection_10.txt', ismulti=True, verbose=True)
+	run_term_frequency('coursework-1-data/passage-collection_10.txt', verbose=False)
 	run_zipf_law(T=100, isplot=False, issave=True)
 	time_elapsed = datetime.now() - start_time 	
-	print('Time elapsed (hh:mm:ss.ms) {}'.format(time_elapsed))
+	print('Time elapsed (hh:mm:ss.ms) {}\n'.format(time_elapsed))

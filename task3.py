@@ -189,13 +189,13 @@ class RetrieverBase:
 		terms = []
 		for tok in nlp(query):
 			tok = str(tok).lower()
-			if str(tok) not in self.vocab and str(tok) not in removed:
-				tqdm.write(f'New word: {str(tok)}')
+			if tok not in self.vocab and tok not in removed:
+				tqdm.write(f'New word: {tok}')
 				continue
-			elif str(tok) in removed:
+			elif tok in removed:
 				continue
 			else:
-				terms.append(str(tok))
+				terms.append(tok)
 
 		score = idf_filter(self.idf, terms)
 
@@ -223,15 +223,14 @@ class RetrieverBase:
 						#q_vec[i] = idf_term * freq_term_query[term]/len(terms) # tfidf of query
 				cos_sim = dot(q_vec, d_vec)/(norm(q_vec)*norm(d_vec))
 				output[pid] = cos_sim # cosine similarity
-				if cos_sim == 1.0:
-					print('max score')
 			else:
 				for term in terms:
 					if pid in score[term]:
 						output[pid] += score[term][pid]
 
 		output_sorted = [(k, v) for k, v in sorted(output.items(), key=lambda item: (item[1], len(self.get_passage(int(item[0])))), reverse=True)]
-		#print(output_sorted)
+		if len(output_sorted) < 101:
+			print(f'{model.__name__} | {query}')
 		return output_sorted[:cutoff]
 
 	def bm25(self, term, pid):
@@ -274,23 +273,20 @@ def query_single(qid, model):
   
   
 if __name__ == '__main__':
-	""" # Initializing
+	print('---------- TASK 3 ----------')
+	# Initializing
 	start_time = datetime.now() 
 	retriever = RetrieverBase()
 	retriever.stats()
 
 	# main processing
+	c = 5
 	retriever.run_exp(test_queries_file='coursework-1-data/test-queries.tsv', 
-					model='bm25', cutoff=5)
+					model='tfidf', cutoff=c)
 
 	retriever.run_exp(test_queries_file='coursework-1-data/test-queries.tsv', 
-					model='tfidf', cutoff=5)
+					model='bm25', cutoff=c)
 
 	# Measure and display elapsed time
 	time_elapsed = datetime.now() - start_time 	
-	print('Time elapsed (hh:mm:ss.ms) {}'.format(time_elapsed)) """
-
-	retriever = RetrieverBase()
-	qid = 1105095
- 	# 1108939: blood
-	query_single(qid, model='tfidf')
+	print('Time elapsed (hh:mm:ss.ms) {}\n'.format(time_elapsed))

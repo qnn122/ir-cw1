@@ -37,7 +37,7 @@ def make_idf(datafile, issave=False):
 	idf = {}
 	for pid in tqdm(pids): 
 		passage = df.loc[df['pid']==pid, 'passage'].values[0]
-		tokens = [str(token) for token in nlp(passage) if str(token) not in removed]
+		tokens = [str(token).lower() for token in nlp(passage) if str(token) not in removed]
 		freq = Counter(tokens)
 		dfq[pid] = freq
 
@@ -69,5 +69,12 @@ def make_idf(datafile, issave=False):
 
 
 if __name__ == '__main__':
+	print('---------- TASK 2 ----------')
+	start_time = datetime.now() 
+
 	datafile = 'coursework-1-data/candidate-passages-top1000.tsv'
 	make_idf(datafile, issave=True)
+
+	# Measure and display elapsed time
+	time_elapsed = datetime.now() - start_time 	
+	print('Time elapsed (hh:mm:ss.ms) {}\n'.format(time_elapsed))
